@@ -11,6 +11,12 @@ export interface User {
   points: number
   badges: Badge[]
   createdAt: Date
+  trustScore: number
+  level: number
+  streakDays: number
+  lastActivityDate: Date
+  referralCode: string
+  clans: string[]
 }
 
 export interface Club {
@@ -68,10 +74,12 @@ export interface Submission {
   userId: string
   user?: User
   mediaUrl?: string
+  mediaBlurHash?: string
   text?: string
   status: "pending" | "approved" | "rejected"
   votes: number
   createdAt: Date
+  requiresManualApproval: boolean
 }
 
 export interface Badge {
@@ -109,6 +117,45 @@ export interface Message {
   user?: User
   content: string
   createdAt: Date
+}
+
+export interface Streak {
+  userId: string
+  currentStreak: number
+  longestStreak: number
+  lastActivityDate: Date
+  lastResetDate?: Date
+}
+
+export interface Bounty {
+  id: string
+  clubId: string
+  creatorId: string
+  title: string
+  description: string
+  rewardPoints: number
+  completions: number
+  maxCompletions?: number
+  criteria: Record<string, any>
+  expiresAt: Date
+  createdAt: Date
+}
+
+export interface Clan {
+  id: string
+  name: string
+  leaderId: string
+  members: string[]
+  totalPoints: number
+  clanbadges: string[]
+  createdAt: Date
+}
+
+export interface TrustLog {
+  userId: string
+  eventType: "verified_phone" | "attended_event" | "submission_approved" | "content_flagged"
+  score: number
+  timestamp: Date
 }
 
 // API Response types
