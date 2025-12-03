@@ -47,7 +47,7 @@
     "html2canvas": "latest",
     "input-otp": "1.4.1",
     "lucide-react": "^0.454.0",
-    "next": "16.0.3",
+    "next": "16.0.7",
     "next-themes": "latest",
     "qrcode.react": "latest",
     "react": "19.2.0",
