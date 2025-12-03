@@ -15,10 +15,13 @@ import { PostCard } from "@/components/post-card"
 import { ClubCard } from "@/components/club-card"
 import { LeaderboardCard } from "@/components/leaderboard-card"
 import { HeatMap } from "@/components/heat-map"
+import { QuestCard } from "@/components/quests/QuestCard"
+import { AchievementCard } from "@/components/quests/AchievementCard"
+import { useGamification } from "@/lib/gamification-context"
 
 import { Plus, Trophy, Users, Star, Bell, Settings, Flame, MapPin } from "lucide-react"
 
-import type { User, Post, Club, LeaderboardEntry } from "@/lib/types"
+import type { User, Post, Club, LeaderboardEntry, Quest, UserQuest, Achievement, UserAchievement } from "@/lib/types"
 
 export default function LaRouineEnhanced() {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
@@ -26,6 +29,7 @@ export default function LaRouineEnhanced() {
   const [posts, setPosts] = useState<Post[]>([])
   const [clubs, setClubs] = useState<Club[]>([])
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
+  const { quests, userQuests, achievements, userAchievements } = useGamification()
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [createType, setCreateType] = useState<"post" | "event" | "challenge">("post")
   const [feedFilter, setFeedFilter] = useState<"all" | "events" | "challenges">("all")
@@ -220,6 +224,10 @@ export default function LaRouineEnhanced() {
               <Trophy className="w-4 h-4" />
               <span className="hidden sm:inline">Top</span>
             </TabsTrigger>
+            <TabsTrigger value="quests" className="gap-2">
+              <Star className="w-4 h-4" />
+              <span className="hidden sm:inline">Quests</span>
+            </TabsTrigger>
             <TabsTrigger value="profile" className="gap-2">
               <Avatar className="w-6 h-6">
                 <AvatarImage src={currentUser?.avatar || "/placeholder.svg"} />
@@ -271,6 +279,17 @@ export default function LaRouineEnhanced() {
           <TabsContent value="leaderboard" className="space-y-4">
             {leaderboard.map((entry) => (
               <LeaderboardCard key={entry.user.id} entry={entry} highlight={currentUser?.id === entry.user.id} />
+            ))}
+          </TabsContent>
+
+          <TabsContent value="quests" className="space-y-4">
+            <h2 className="text-xl font-bold">Active Quests</h2>
+            {quests.map(quest => (
+              <QuestCard key={quest.id} quest={quest} userQuest={userQuests.find(uq => uq.questId === quest.id)} />
+            ))}
+            <h2 className="text-xl font-bold mt-8">Achievements</h2>
+            {achievements.map(achievement => (
+              <AchievementCard key={achievement.id} achievement={achievement} userAchievement={userAchievements.find(ua => ua.achievementId === achievement.id)} />
             ))}
           </TabsContent>
 

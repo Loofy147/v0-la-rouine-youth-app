@@ -1,7 +1,9 @@
 // Core gamification calculation engine
+import type { Quest, Achievement } from './types';
 
 export interface GamificationConfig {
   pointsPerAction: Record<string, number>
+  pointsPerAchievement: Record<string, number>
   streakBonuses: Record<number, number>
   levelThresholds: number[]
 }
@@ -17,6 +19,11 @@ export const defaultConfig: GamificationConfig = {
     "comment-added": 5,
     "bounty-completed": 100,
     "friend-referred": 200,
+  },
+  pointsPerAchievement: {
+    "first-post": 50,
+    "community-builder": 150,
+    "event-organizer": 200,
   },
   streakBonuses: {
     3: 1.1, // 10% bonus at 3 days
@@ -35,6 +42,25 @@ export function calculatePoints(
 ): number {
   const multiplier = config.streakBonuses[streakDays] || 1
   return Math.floor(basePoints * multiplier)
+}
+
+export function calculateQuestReward(
+  quest: Quest,
+  streakDays: number,
+  config: GamificationConfig = defaultConfig,
+): number {
+  const multiplier = config.streakBonuses[streakDays] || 1;
+  return Math.floor(quest.reward.points * multiplier);
+}
+
+export function calculateAchievementReward(
+  achievement: Achievement,
+  streakDays: number,
+  config: GamificationConfig = defaultConfig,
+): number {
+    const basePoints = config.pointsPerAchievement[achievement.id] || 0;
+  const multiplier = config.streakBonuses[streakDays] || 1;
+  return Math.floor(basePoints * multiplier);
 }
 
 export function getLevelFromPoints(points: number, config: GamificationConfig = defaultConfig): number {

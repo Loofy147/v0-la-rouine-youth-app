@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono, Tajawal } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { GamificationProvider } from "@/lib/gamification-context.tsx"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -59,7 +60,9 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={`${tajawal.className} font-sans antialiased`}>
-        {children}
+        <GamificationProvider>
+          {children}
+        </GamificationProvider>
         <Analytics />
       </body>
     </html>

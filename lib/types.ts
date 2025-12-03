@@ -158,6 +158,58 @@ export interface TrustLog {
   timestamp: Date
 }
 
+export interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  criteria: QuestCriterion[];
+  reward: {
+    points: number;
+    badgeId?: string;
+  };
+  expiresAt?: Date;
+  isRepeatable: boolean;
+}
+
+export interface QuestCriterion {
+  description: string;
+  eventType: string;
+  targetCount: number;
+}
+
+export interface UserQuest {
+  userId: string;
+  questId: string;
+  progress: UserQuestProgress[];
+  status: 'in-progress' | 'completed';
+  completedAt?: Date;
+  startedAt: Date;
+}
+
+export interface UserQuestProgress {
+  eventType: string;
+  currentCount: number;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  criteria: AchievementCriterion[];
+}
+
+export interface AchievementCriterion {
+    metric: string;
+    targetValue: number;
+}
+
+export interface UserAchievement {
+  userId: string;
+  achievementId: string;
+  unlockedAt: Date;
+}
+
 // API Response types
 export interface ApiResponse<T> {
   data?: T
